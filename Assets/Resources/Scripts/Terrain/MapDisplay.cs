@@ -4,6 +4,13 @@ public class MapDisplay : MonoBehaviour
 {
     public Renderer texturerRenderer;
 
+    /// <summary>
+    /// Method <c>DrawNoiseMap</c> Takes in a noise map and applies the output to a <see cref="Renderer"/>.
+    /// <br/><br/>
+    /// <param name="noiseMap">float[,] <c>noiseMap</c> A noise map for generating the texture.</param>
+    /// <br/><br/>
+    /// <seealso cref="Noise.GenerateNoiseMap(int, int, float)"/>
+    /// </summary>
     public void DrawNoiseMap(float[,] noiseMap)
     {
         int width = noiseMap.GetLength(0);
