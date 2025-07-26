@@ -13,6 +13,11 @@ public class MapGeneratorEditor : Editor
             if (mapGen.autoUpdate) mapGen.GenerateMap();
         }
 
+        if (GUILayout.Button("Ranomise Seed"))
+        {
+            mapGen.RandomiseSeed();
+        }
+
         if (GUILayout.Button("Generate"))
         {
             mapGen.GenerateMap();

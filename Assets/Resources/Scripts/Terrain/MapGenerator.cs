@@ -16,7 +16,8 @@ public class MapGenerator : MonoBehaviour
     public enum DrawMode
     {
         NoiseMap,
-        ColourMap
+        ColourMap,
+        Mesh
     }
 
     public DrawMode drawMode;
@@ -30,9 +31,11 @@ public class MapGenerator : MonoBehaviour
     public float persistence;
     public float lacunarity;
 
-    public bool randomSeed;
     public int seed;
     public Vector2 offset;
+
+    public float meshHeightMultiplier;
+    public AnimationCurve meshHeightCurve;
 
     public bool autoUpdate;
 
@@ -54,16 +57,23 @@ public class MapGenerator : MonoBehaviour
             display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
         else if (drawMode == DrawMode.ColourMap)
             display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+        else if (drawMode == DrawMode.Mesh)
+            display.DrawMesh(
+                MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve),
+                TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+    }
+
+    /// <summary>
+    /// Method <c>RandomiseSeed</c> Generates a psuedo random seed.
+    /// </summary>
+    public void RandomiseSeed()
+    {
+        System.Random random = new System.Random((int)DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+        seed = random.Next();
     }
 
     private float[,] GenerateNoiseMap()
     {
-        if (randomSeed)
-        {
-            System.Random random = new System.Random((int)DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-            seed = random.Next();
-        }
-
         return Noise.GenerateNoiseMap(
             mapWidth,
             mapHeight,
