@@ -555,13 +555,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9592977622b29e743bae8870c5365cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawMode: 1
   mapWidth: 100
   mapHeight: 100
-  noiseScale: 30
+  noiseScale: 20
   octaves: 4
   persistence: 0.5
-  lacunarity: 2
+  lacunarity: 1.8
+  seed: 16052002
+  offset: {x: 0, y: 0}
   autoUpdate: 1
+  regions:
+  - name: Deep Water
+    height: 0.35
+    color: {r: 0.118592024, g: 0.5012873, b: 0.6132076, a: 0}
+  - name: Water
+    height: 0.4
+    color: {r: 0.12148453, g: 0.5379016, b: 0.6603774, a: 0}
+  - name: Shallow Water
+    height: 0.45
+    color: {r: 0.119927004, g: 0.5866332, b: 0.7264151, a: 0}
+  - name: Beach
+    height: 0.5
+    color: {r: 0.5943396, g: 0.584759, b: 0.19904771, a: 0}
+  - name: Grass
+    height: 0.55
+    color: {r: 0.15908687, g: 0.5188679, b: 0.16229996, a: 0}
+  - name: Inland Grass
+    height: 0.65
+    color: {r: 0.12936097, g: 0.4811321, b: 0.12936097, a: 0}
+  - name: Slopes
+    height: 0.7
+    color: {r: 0.4811321, g: 0.37796578, b: 0.25645247, a: 0}
+  - name: Lower Peaks
+    height: 0.75
+    color: {r: 0.49056602, g: 0.41839343, b: 0.33552864, a: 0}
+  - name: Upper Peaks
+    height: 0.85
+    color: {r: 0.46226418, g: 0.43710467, b: 0.4077519, a: 0}
+  - name: High Peaks
+    height: 0.85
+    color: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0}
+  - name: Summit
+    height: 0.95
+    color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0}
+  - name: Snow
+    height: 1
+    color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 0}
 --- !u!4 &1250995943
 Transform:
   m_ObjectHideFlags: 0
