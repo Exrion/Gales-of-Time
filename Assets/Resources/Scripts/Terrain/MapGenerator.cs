@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -29,6 +30,7 @@ public class MapGenerator : MonoBehaviour
     public float persistence;
     public float lacunarity;
 
+    public bool randomSeed;
     public int seed;
     public Vector2 offset;
 
@@ -43,7 +45,26 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     public void GenerateMap()
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(
+        float[,] noiseMap = GenerateNoiseMap();
+        Color[] colourMap = GenerateColourMap(noiseMap);
+
+        MapDisplay display = FindAnyObjectByType<MapDisplay>();
+
+        if (drawMode == DrawMode.NoiseMap)
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
+        else if (drawMode == DrawMode.ColourMap)
+            display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+    }
+
+    private float[,] GenerateNoiseMap()
+    {
+        if (randomSeed)
+        {
+            System.Random random = new System.Random((int)DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            seed = random.Next();
+        }
+
+        return Noise.GenerateNoiseMap(
             mapWidth,
             mapHeight,
             noiseScale,
@@ -52,7 +73,10 @@ public class MapGenerator : MonoBehaviour
             persistence,
             lacunarity,
             offset);
+    }
 
+    private Color[] GenerateColourMap(float[,] noiseMap)
+    {
         Color[] colourMap = new Color[mapWidth * mapHeight];
 
         for (int y = 0; y < mapHeight; y++)
@@ -67,12 +91,7 @@ public class MapGenerator : MonoBehaviour
                     }
             }
 
-        MapDisplay display = FindAnyObjectByType<MapDisplay>();
-
-        if (drawMode == DrawMode.NoiseMap)
-            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-        else if (drawMode == DrawMode.ColourMap)
-            display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+        return colourMap;
     }
 
     private void OnValidate()

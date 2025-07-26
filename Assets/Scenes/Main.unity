@@ -562,7 +562,8 @@ MonoBehaviour:
   octaves: 4
   persistence: 0.5
   lacunarity: 1.8
-  seed: 16052002
+  randomSeed: 1
+  seed: 507214993
   offset: {x: 0, y: 0}
   autoUpdate: 1
   regions:
