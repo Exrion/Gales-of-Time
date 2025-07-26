@@ -22,8 +22,9 @@ public class MapGenerator : MonoBehaviour
 
     public DrawMode drawMode;
 
-    public int mapWidth;
-    public int mapHeight;
+    public const int mapChunkSize = 241;
+    [Range(0,6)]
+    public int levelOfDetail;
     public float noiseScale;
 
     public int octaves;
@@ -56,11 +57,11 @@ public class MapGenerator : MonoBehaviour
         if (drawMode == DrawMode.NoiseMap)
             display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
         else if (drawMode == DrawMode.ColourMap)
-            display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+            display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
         else if (drawMode == DrawMode.Mesh)
             display.DrawMesh(
-                MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve),
-                TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+                MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail),
+                TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
     }
 
     /// <summary>
@@ -75,8 +76,8 @@ public class MapGenerator : MonoBehaviour
     private float[,] GenerateNoiseMap()
     {
         return Noise.GenerateNoiseMap(
-            mapWidth,
-            mapHeight,
+            mapChunkSize,
+            mapChunkSize,
             noiseScale,
             seed,
             octaves,
@@ -87,16 +88,16 @@ public class MapGenerator : MonoBehaviour
 
     private Color[] GenerateColourMap(float[,] noiseMap)
     {
-        Color[] colourMap = new Color[mapWidth * mapHeight];
+        Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
 
-        for (int y = 0; y < mapHeight; y++)
-            for (int x = 0; x < mapWidth; x++)
+        for (int y = 0; y < mapChunkSize; y++)
+            for (int x = 0; x < mapChunkSize; x++)
             {
                 float currentHeight = noiseMap[x, y];
                 for (int i = 0; i < regions.Length; i++)
                     if (currentHeight <= regions[i].height)
                     {
-                        colourMap[y * mapWidth + x] = regions[i].color;
+                        colourMap[y * mapChunkSize + x] = regions[i].color;
                         break;
                     }
             }
@@ -106,10 +107,6 @@ public class MapGenerator : MonoBehaviour
 
     private void OnValidate()
     {
-        if (mapWidth < 1)
-            mapWidth = 1;
-        if (mapHeight < 1)
-            mapHeight = 1;
         if (lacunarity < 1)
             lacunarity = 1;
         if (octaves < 1)
