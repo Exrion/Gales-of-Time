@@ -10,7 +10,7 @@ public class MapGeneratorEditor : Editor
 
         if (DrawDefaultInspector())
         {
-            if (mapGen.autoUpdate) mapGen.GenerateMap();
+            if (mapGen.autoUpdate) mapGen.DrawMapInEditor();
         }
 
         if (GUILayout.Button("Ranomise Seed"))
@@ -20,7 +20,7 @@ public class MapGeneratorEditor : Editor
 
         if (GUILayout.Button("Generate"))
         {
-            mapGen.GenerateMap();
+            mapGen.DrawMapInEditor();
         }
     }
 }
